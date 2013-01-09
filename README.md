@@ -52,6 +52,11 @@ in grunt.js:
 
 ## Release History
 
+
+### 0.1.1
+
+bump up version number to force updating readme in npmjs.org
+
 ### 0.1.0
 
 first release
