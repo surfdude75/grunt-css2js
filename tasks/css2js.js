@@ -8,30 +8,22 @@
  * Licensed under the BSD license.
  */
 
-var fs = require('fs');
-
 module.exports = function (grunt) {
     'use strict';
 
-    grunt.registerMultiTask('css2js', 'Convert CSS to JS.', function () {
+    grunt.registerMultiTask('css2js', 'Convert a CSS File to JS DOM Script.', function () {
 
         var src = grunt.file.expandFiles(this.data.src).toString(),
             dest = this.data.dest;
 
-        grunt.log.writeln("Converting: '" + src + "' to JavaScript");
+        var css = grunt.file.read(src);
 
-        var css = fs.readFileSync(src).toString();
-        if (!css) {
-            grunt.log.writeln("Failed to read file");
-            return false;
-        }
-
-        var cssStrings = css.split("\n").map(function (l) {
+        var cssInJavascriptString = css.split("\n").map(function (l) {
             return '"' + l + '\\n"';
         }).join(" + \n");
 
-        var js = '(function () {' +
-            '    var cssText = ' + cssStrings + ',' +
+        var cssInlineScript = '(function () {' +
+            '    var cssText = ' + cssInJavascriptString + ',' +
             '        styleEl = document.createElement("style");' +
             '    document.getElementsByTagName("head")[0].appendChild(styleEl);' +
             '    if (styleEl.styleSheet) {' +
@@ -47,9 +39,8 @@ module.exports = function (grunt) {
             '    }' +
             '}());';
 
-        grunt.log.writeln("Saved: '" + src + "' as '" + dest + "'");
-        fs.writeFileSync(dest, js);
-
+        grunt.log.writeln('File "' + dest + '" created.');
+        grunt.file.write(dest, cssInlineScript);
         return true;
     });
 
