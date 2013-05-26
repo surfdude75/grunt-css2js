@@ -40,6 +40,7 @@ module.exports = function (grunt) {
 
     function convertInJSString(css) {
         return css.split("\n").map(function (l) {
+            l = l.replace(/\"/g, '\\"');
             return '"' + l + '\\n"';
         }).join(" + \n");
     }
