@@ -52,9 +52,14 @@ in Gruntfile.js:
 
 ## Release History
 
+### 0.2.1
+
+- handle escaped characters by @aoberoi
+
 ### 0.2.0
 
-Support for grunt ~0.4.1
+- Support for grunt ~0.4.1
+- fixes issues with double quotes by @aoberoi
 
 ### 0.1.1
 
