@@ -7,60 +7,65 @@
  * Copyright (c) 2013 Choi Seong-Rak
  * Licensed under the BSD license.
  */
+(function () {
 
-module.exports = function (grunt) {
-    'use strict';
+    module.exports = function (grunt) {
+        'use strict';
 
-    grunt.registerMultiTask('css2js', 'Convert a CSS File to JS DOM Script.', function () {
+        grunt.registerMultiTask('css2js', 'Convert a CSS File to JS DOM Script.', function () {
 
-        // Iterate of the Files Array
-        this.files.forEach(function (file) {
+            // Iterate of the Files Array
+            this.files.forEach(function (file) {
 
-            var contents = file.src.filter(function (filepath) {
-                // Remove nonexistent files (it's up to you to filter or warn here).
-                if (!grunt.file.exists(filepath)) {
-                    grunt.log.warn('Source file "' + filepath + '" not found.');
-                    return false;
-                } else {
-                    return true;
-                }
-            }).map(function (filepath) {
-                    // Read and return the file's source.
-                    return grunt.file.read(filepath);
-                }).join('\n');
+                var contents = file.src.filter(function (filepath) {
+                    // Remove nonexistent files (it's up to you to filter or warn here).
+                    if (!grunt.file.exists(filepath)) {
+                        grunt.log.warn('Source file "' + filepath + '" not found.');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }).map(function (filepath) {
+                        // Read and return the file's source.
+                        return grunt.file.read(filepath);
+                    }).join('\n');
 
-            var cssInJavascriptString = convertInJSString(contents);
+                var cssInJavascriptString = convertInJSString(contents);
 
-            grunt.file.write(file.dest, '(function () {' +
-                '    var cssText = ' + cssInJavascriptString + ',' +
-                '        styleEl = document.createElement("style");' +
-                '    document.getElementsByTagName("head")[0].appendChild(styleEl);' +
-                '    if (styleEl.styleSheet) {' +
-                '        if (!styleEl.styleSheet.disabled) {' +
-                '            styleEl.styleSheet.cssText = cssText;' +
-                '        }' +
-                '    } else {' +
-                '        try {' +
-                '            styleEl.innerHTML = cssText' +
-                '        } catch(e) {' +
-                '            styleEl.innerText = cssText;' +
-                '        }' +
-                '    }' +
-                '}());');
+                grunt.file.write(file.dest, '(function () {' +
+                    '    var cssText = ' + cssInJavascriptString + ',' +
+                    '        styleEl = document.createElement("style");' +
+                    '    document.getElementsByTagName("head")[0].appendChild(styleEl);' +
+                    '    if (styleEl.styleSheet) {' +
+                    '        if (!styleEl.styleSheet.disabled) {' +
+                    '            styleEl.styleSheet.cssText = cssText;' +
+                    '        }' +
+                    '    } else {' +
+                    '        try {' +
+                    '            styleEl.innerHTML = cssText' +
+                    '        } catch(e) {' +
+                    '            styleEl.innerText = cssText;' +
+                    '        }' +
+                    '    }' +
+                    '}());');
 
-            grunt.log.writeln('File "' + file.dest + '" created.');
+                grunt.log.writeln('File "' + file.dest + '" created.');
 
+            });
+
+            return true;
         });
 
-        return true;
-    });
+    };
 
-    function convertInJSString(css) {
-        return css.split("\n").map(function (l) {
+    var convertInJSString = module.exports.convertInJSString = function (css) {
+        var cssLines = css.split("\n"), cssLineCount = cssLines.length;
+        return cssLines.map(function (l, idx) {
+            var isLastOne = idx === (cssLineCount - 1);
             l = l.replace(/\\/g, '\\\\');
             l = l.replace(/\"/g, '\\"');
-            return '"' + l + '\\n"';
+            return '"' + l + '' + (!isLastOne ? '\\n' : '') + '"';
         }).join(" + \n");
-    }
+    };
 
-};
+}());
