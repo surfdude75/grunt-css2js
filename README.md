@@ -54,7 +54,7 @@ in Gruntfile.js:
 
 ### 0.2.3
 
-- fixes issue with <cr><lf> line ending source files.
+- fixes issue with &lt;cr&gt;&lt;lf&gt; line ended source files.
 - removes trailing a space.
 
 ### 0.2.1
