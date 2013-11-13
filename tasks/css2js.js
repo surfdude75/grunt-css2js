@@ -59,13 +59,13 @@
     };
 
     var convertInJSString = module.exports.convertInJSString = function (css) {
-        var cssLines = css.split("\n"), cssLineCount = cssLines.length;
+        var cssLines = css.split(/\r?\n/), cssLineCount = cssLines.length;
         return cssLines.map(function (l, idx) {
             var isLastOne = idx === (cssLineCount - 1);
             l = l.replace(/\\/g, '\\\\');
             l = l.replace(/\"/g, '\\"');
             return '"' + l + '' + (!isLastOne ? '\\n' : '') + '"';
-        }).join(" + \n");
+        }).join(" +\n");
     };
 
 }());

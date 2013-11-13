@@ -38,8 +38,17 @@ var grunt = require('grunt');
             test.expect(1);
             var css = ".class { font-size: 34pt; }\n#id { color: #f00; }\ndiv{border: solid 1px red}";
             test.equals(
-                '".class { font-size: 34pt; }\\n" + \n' +
-                    '"#id { color: #f00; }\\n" + \n' +
+                '".class { font-size: 34pt; }\\n" +\n' +
+                    '"#id { color: #f00; }\\n" +\n' +
+                    '"div{border: solid 1px red}"', css2js.convertInJSString(css));
+            test.done();
+        },
+        'multi line css - source with <CR><LF> ending': function (test) {
+            test.expect(1);
+            var css = ".class { font-size: 34pt; }\r\n#id { color: #f00; }\r\ndiv{border: solid 1px red}";
+            test.equals(
+                '".class { font-size: 34pt; }\\n" +\n' +
+                    '"#id { color: #f00; }\\n" +\n' +
                     '"div{border: solid 1px red}"', css2js.convertInJSString(css));
             test.done();
         },

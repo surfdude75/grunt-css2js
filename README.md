@@ -52,6 +52,11 @@ in Gruntfile.js:
 
 ## Release History
 
+### 0.2.3
+
+- fixes issue with <cr><lf> line ending source files.
+- removes trailing a space.
+
 ### 0.2.1
 
 - handle escaped characters by @aoberoi
