@@ -52,6 +52,11 @@ in Gruntfile.js:
 
 ## Release History
 
+### 0.2.4
+
+- beautify css injection snippet by @eastkiki
+- add a sample task into Gruntfile.js by @eastkiki
+
 ### 0.2.3
 
 - fixes issue with &lt;cr&gt;&lt;lf&gt; line ended source files.
