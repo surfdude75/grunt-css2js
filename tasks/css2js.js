@@ -9,6 +9,7 @@
  */
 (function () {
 
+    var path = require('path');
     module.exports = function (grunt) {
         'use strict';
 
@@ -17,7 +18,7 @@
             // Iterate of the Files Array
             this.files.forEach(function (file) {
 
-                var contents = file.src.filter(function (filepath) {
+                var existFiles = file.src.filter(function (filepath) {
                     // Remove nonexistent files (it's up to you to filter or warn here).
                     if (!grunt.file.exists(filepath)) {
                         grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -25,29 +26,38 @@
                     } else {
                         return true;
                     }
-                }).map(function (filepath) {
-                        // Read and return the file's source.
-                        return grunt.file.read(filepath);
-                    }).join('\n');
+                });
+
+                var contents = existFiles.map(function (filepath) {
+                    // Read and return the file's source.
+                    return grunt.file.read(filepath);
+                }).join('\n');
+
+                var fileNames = existFiles.map(function (filepath) {
+                    return path.basename(filepath);
+                }).join(', ');
 
                 var cssInJavascriptString = convertInJSString(contents);
 
-                grunt.file.write(file.dest, '(function () {' +
-                    '    var cssText = ' + cssInJavascriptString + ',' +
-                    '        styleEl = document.createElement("style");' +
-                    '    document.getElementsByTagName("head")[0].appendChild(styleEl);' +
-                    '    if (styleEl.styleSheet) {' +
-                    '        if (!styleEl.styleSheet.disabled) {' +
-                    '            styleEl.styleSheet.cssText = cssText;' +
-                    '        }' +
-                    '    } else {' +
-                    '        try {' +
-                    '            styleEl.innerHTML = cssText' +
-                    '        } catch(e) {' +
-                    '            styleEl.innerText = cssText;' +
-                    '        }' +
-                    '    }' +
-                    '}());');
+                grunt.file.write(file.dest, '(function () {\n' +
+                    '    // ' + fileNames + '\n' +
+                    '    var cssText = "" +\n' + cssInJavascriptString + ';\n' +
+                    '    // cssText end\n' +
+                    '\n' +
+                    '    var styleEl = document.createElement("style");\n' +
+                    '    document.getElementsByTagName("head")[0].appendChild(styleEl);\n' +
+                    '    if (styleEl.styleSheet) {\n' +
+                    '        if (!styleEl.styleSheet.disabled) {\n' +
+                    '            styleEl.styleSheet.cssText = cssText;\n' +
+                    '        }\n' +
+                    '    } else {\n' +
+                    '        try {\n' +
+                    '            styleEl.innerHTML = cssText\n' +
+                    '        } catch(e) {\n' +
+                    '            styleEl.innerText = cssText;\n' +
+                    '        }\n' +
+                    '    }\n' +
+                    '}());\n');
 
                 grunt.log.writeln('File "' + file.dest + '" created.');
 
