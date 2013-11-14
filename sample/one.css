@@ -1,0 +1,6 @@
+/* one css */
+html {width:100%;height:100%;position:absolute;}
+body {width:100%;height:100%;position:absolute;}
+div {width:100%;height:100%;position:absolute;}
+.div {border-radius: 5px;border: 1px solid #000;}
+#div {-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}
