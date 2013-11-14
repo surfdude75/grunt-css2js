@@ -36,11 +36,11 @@ module.exports = function (grunt) {
         css2js: {
             onesrc_test: {
                 src: 'sample/one.css',
-                dest: 'dist/onesrc_test_css2js.js'
+                dest: 'sample/dist/onesrc_test_css2js.js'
             },
             multisrc_test: {
                 src: ['sample/one.css', 'sample/two.css'],
-                dest: 'dist/multisrc_test_css2js.js'
+                dest: 'sample/dist/multisrc_test_css2js.js'
             }
         }
     });
