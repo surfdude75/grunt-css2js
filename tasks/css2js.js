@@ -52,7 +52,7 @@
                     '        }\n' +
                     '    } else {\n' +
                     '        try {\n' +
-                    '            styleEl.innerHTML = cssText\n' +
+                    '            styleEl.innerHTML = cssText;\n' +
                     '        } catch(e) {\n' +
                     '            styleEl.innerText = cssText;\n' +
                     '        }\n' +
