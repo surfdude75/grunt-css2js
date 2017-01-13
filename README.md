@@ -52,6 +52,10 @@ in Gruntfile.js:
 
 ## Release History
 
+### 0.2.5
+
+- Fix missing semicolon for linters by @Lumis11
+
 ### 0.2.4
 
 - beautify css injection snippet by @eastkiki
@@ -80,5 +84,5 @@ bump up version number to force updating readme in npmjs.org
 first release
 
 ## License
-Copyright (c) 2013 Choi Seong-Rak  
+Copyright (c) 2013 Choi Seong-Rak
 Licensed under the BSD license.
