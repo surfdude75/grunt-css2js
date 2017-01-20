@@ -52,6 +52,10 @@ in Gruntfile.js:
 
 ## Release History
 
+### 0.2.6
+
+- Avoid creating JavaScript code when CSS files are empty. by @nidorx
+
 ### 0.2.5
 
 - Fix missing semicolon for linters by @Lumis11
