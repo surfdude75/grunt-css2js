@@ -16,6 +16,10 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('css2js', 'Convert a CSS File to JS DOM Script.', function () {
 
+        var options = this.options({
+          globalname: 'cssText'    
+        });
+        
         // Iterate of the Files Array
         this.files.forEach(function (file) {
 
@@ -40,32 +44,7 @@ module.exports = function (grunt) {
 
             var cssInJavascriptString = convertInJSString(contents);
 
-            // empty?
-            var outputContent = cssInJavascriptString === '""'
-                    ? '// ' + fileNames
-                    : [
-                        '(function () {',
-                        '    // ' + fileNames + '',
-                        '    var cssText = ' + cssInJavascriptString + ';',
-                        '',
-                        '    var styleEl = document.createElement("style");',
-                        '    document.getElementsByTagName("head")[0].appendChild(styleEl);',
-                        '    if (styleEl.styleSheet) {',
-                        '        if (!styleEl.styleSheet.disabled) {',
-                        '            styleEl.styleSheet.cssText = cssText;',
-                        '        }',
-                        '    } else {',
-                        '        try {',
-                        '            styleEl.innerHTML = cssText;',
-                        '        } catch(e) {',
-                        '            styleEl.innerText = cssText;',
-                        '        }',
-                        '    }',
-                        '}());',
-                        ''
-                    ].join('\n');
-
-            grunt.file.write(file.dest, outputContent);
+            grunt.file.write(file.dest, 'var '+options.globalname+' = ' + cssInJavascriptString + '\n');
 
             grunt.log.writeln('File "' + file.dest + '" created.');
         });
